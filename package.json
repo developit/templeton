@@ -1,0 +1,14 @@
+{
+  "name": "TemplateEngine",
+  "version": "1.8.2",
+  "main": "templateengine.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/developit/TemplateEngine.git"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-uglify": "~0.2.7"
+  }
+}
