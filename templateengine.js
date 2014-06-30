@@ -1,29 +1,42 @@
-/** @fileOverview A simple template engine with iterators and extensible block helpers
+/** A simple template engine with iterators and extensible block helpers
  *	@author Jason Miller <j AT dvlpt DOT com>
  */
-
 var engine = {
 	
+	/** Allow "~" and "__path__" special keys? */
 	extendedKeys : true,
 	
+	/** Helpers can be simple templates, or transformation functions */
 	helpers : {
-		link : '<a href="{{href|html}}">{{title|html}}</a>',
+		link : '<a href="{{href}}">{{title}}</a>',
+		
 		html : function(v) {
 			return String(v).replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 		},
+		
 		escape : function(v) {
 			return encodeURIComponent(v);
 		},
-		json : function(v){ return JSON.stringify(v); }
-	},
-	
-	refs : {
-		'@' : function(fields, key, fallback) {
-			return engine.devle(fields, 'locale.'+key, fallback);
+		
+		json : function(v) {
+			return JSON.stringify(v);
 		}
 	},
 	
+	/** Custom modifiers registered as single-character key prefixes */
+	refs : {
+		/*
+		// Example ref: "{{@greeting.welcome}}"
+		'@' : function(fields, key, fallback) {
+			return engine.devle(fields, 'locale.'+key, fallback);
+		}
+		*/
+	},
+	
+	/**	Deal with types of blocks */
 	blockHelpers : {
+		
+		/** Basic iterator */
 		each : function(ctx) {
 			var out='', p, fields,
 				top = ctx.fields,
@@ -44,28 +57,28 @@ var engine = {
 			}
 			return out;
 		},
+		
+		/** Conditional block */
 		'if' : function(ctx) {
 			return ctx.value ? engine.template(ctx.content, ctx.fields, ctx.overrides) : '';
 		},
+		
+		/** Conditional block (inverted) */
 		'else' : function(ctx) {
 			return ctx.value ? '' : engine.template(ctx.content, ctx.fields, ctx.overrides);
-			//return ctx.previousValue ? '' : engine.template(ctx.content, ctx.fields, ctx.overrides);
+		},
+		
+		'unless' : function(ctx) {
+			return this['else'](ctx);
 		}
+		
 	},
 	
-	/*
-	getTokenizer : function() {
-		var keys = engine.refs && engine.objKeys(engine.refs).join('') || '',
-			tokenizer;
-		tokenizer = new RegExp('\\{\\{([#\\/\\:'+keys+']?)([^ \\{\}\\|]+)(?: ([^\\{\}\\|]*?))?(?:\\|([^\\{\\}]*?))?\\}\\}', 'g');
-		return tokenizer;
-	},
-	*/
-	
+	/** The guts. */
 	template : function(text, fields, _overrides) {
 		var tokenizer = /\{\{\{?([#\/\:]?)([^ \{\}\|]+)(?: ([^\{\}\|]*?))?(?:\|([^\{\}]*?))?\}?\}\}/g,
 			out = '',
-			t, j, r, f, index, mods, token,
+			t, j, r, f, index, mods, token, html,
 			stack = [],
 			ctx;
 		ctx = {
@@ -92,15 +105,19 @@ var engine = {
 						out += token[0];
 					}
 					else {
+						html = token[0].charAt(2)!=='{';
 						if (token[4]) {
 							mods = token[4].split('|');
 							for (j=0; j<mods.length; j++) {
 								if (engine.helpers.hasOwnProperty(mods[j])) {
+									if (mods[j]==='html') {
+										html = false;
+									}
 									r = engine.execHelper(mods[j], r);
 								}
 							}
 						}
-						if (token[0].charAt(2)==='{') {
+						if (html) {
 							r = engine.helpers.html(r);
 						}
 						out += r;
@@ -131,22 +148,14 @@ var engine = {
 					index = null;
 				}
 			}
-			/*
-			else {
-				if (stack.length===0) {
-					out += token[0];
-				}
-			}
-			*/
 			index = tokenizer.lastIndex;
 		}
 		out += text.substring(index);
 		return out;
 	},
 	
-	// internals
-	
 	keyPath : /(\.{2,}|\[(['"])([^\.]*?)\1\])/g,
+	
 	trimDots : /(^\.|\.$)/g,
 	
 	execHelper : function(name, text) {
@@ -163,18 +172,6 @@ var engine = {
 	isArray : Array.isArray || function(obj) {
 		return Object.prototype.toString.call(obj)==='[object Array]';
 	},
-	
-	/*
-	objKeys : Object.keys || function(obj) {
-		var keys=[], i;
-		for (i in obj) {
-			if (obj.hasOwnProperty(i)) {
-				keys.push(i);
-			}
-		}
-		return keys;
-	},
-	*/
 	
 	copy : function(obj, from) {
 		for (var j in from) {
@@ -210,6 +207,11 @@ var engine = {
 	
 };
 
-if (typeof window.define==='function' && window.define.amd) {
-	window.define('templateengine', function(){ return engine; });
+if (typeof define==='function' && define.amd) {
+	define('templateengine', function() {
+		return engine;
+	});
+}
+if (typeof module==='object') {
+	module.exports = self;
 }
