@@ -8,8 +8,8 @@ module.exports = function(grunt) {
 					banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
 				},
 				files: {
-					'templateengine.min.js': [
-						'templateengine.js'
+					'template-engine.min.js': [
+						'template-engine.js'
 					]
 				}
 			}
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 				browser : true
 			},
 			main : [
-				'templateengine.js'
+				'template-engine.js'
 			]
 		}
 	});

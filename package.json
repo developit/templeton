@@ -1,10 +1,10 @@
 {
-  "name": "TemplateEngine",
+  "name": "template-engine",
   "version": "1.9.0",
-  "main": "templateengine.js",
+  "main": "template-engine.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/developit/TemplateEngine.git"
+    "url": "git://github.com/developit/template-engine.git"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
