@@ -9,8 +9,8 @@ Example
 -------
 
 ```JavaScript
-var output = templeton.template('Test: {{test}}', {
-	test : 'Hello'
+var output = templeton.template('Hello, {{user}}!', {
+	user : 'World'
 });
-// 'Hello'
+console.log(output);  // "Hello, World!"
 ```

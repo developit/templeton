@@ -1,0 +1,29 @@
+{
+  "name": "templeton",
+  "version": "2.0.2",
+  "homepage": "https://github.com/developit/templeton",
+  "authors": [
+    "Jason Miller <jason@developit.ca>"
+  ],
+  "description": "It's like the other ones but not at all like the other ones.",
+  "main": "templeton.js",
+  "moduleType": [
+    "amd",
+    "node",
+    "globals"
+  ],
+  "keywords": [
+    "template",
+    "templateengine"
+  ],
+  "license": "BSD 3-Clause",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "website",
+    "docs"
+  ]
+}
