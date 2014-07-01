@@ -1,7 +1,5 @@
-/** A simple template engine with iterators and extensible block helpers
- *	@author Jason Miller <j AT dvlpt DOT com>
- */
-var engine = {
+/** A simple template engine with iterators and extensible block helpers */
+var templeton = {
 	
 	/** Allow "~" and "__path__" special keys? */
 	extendedKeys : true,
@@ -28,7 +26,7 @@ var engine = {
 		/*
 		// Example ref: "{{@greeting.welcome}}"
 		'@' : function(fields, key, fallback) {
-			return engine.devle(fields, 'locale.'+key, fallback);
+			return templeton.devle(fields, 'locale.'+key, fallback);
 		}
 		*/
 	},
@@ -41,7 +39,7 @@ var engine = {
 			var out='', p, fields,
 				top = ctx.fields,
 				obj = ctx.value;
-			if (engine.extendedKeys!==false) {
+			if (templeton.extendedKeys!==false) {
 				fields = {
 					'~' : top,
 					__path__ : ctx.id==='.' ? ctx.path : ctx.id
@@ -52,7 +50,7 @@ var engine = {
 					if (fields) {
 						fields.__key__ = p;
 					}
-					out += engine.template(ctx.content, obj[p], fields);
+					out += templeton.template(ctx.content, obj[p], fields);
 				}
 			}
 			return out;
@@ -60,12 +58,12 @@ var engine = {
 		
 		/** Conditional block */
 		'if' : function(ctx) {
-			return ctx.value ? engine.template(ctx.content, ctx.fields, ctx.overrides) : '';
+			return ctx.value ? templeton.template(ctx.content, ctx.fields, ctx.overrides) : '';
 		},
 		
 		/** Conditional block (inverted) */
 		'else' : function(ctx) {
-			return ctx.value ? '' : engine.template(ctx.content, ctx.fields, ctx.overrides);
+			return ctx.value ? '' : templeton.template(ctx.content, ctx.fields, ctx.overrides);
 		},
 		
 		'unless' : function(ctx) {
@@ -83,7 +81,7 @@ var engine = {
 			ctx;
 		ctx = {
 			fields : fields || {},
-			overrides : _overrides || engine._emptyObj
+			overrides : _overrides || templeton._emptyObj
 		};
 		ctx.path = (ctx.overrides.__path__?(ctx.overrides.__path__+'.'):'')+ctx.overrides.__key__;
 		tokenizer.lastIndex = 0;
@@ -96,10 +94,10 @@ var engine = {
 				f = token[2];
 				if (stack.length===0) {
 					if (t) {
-						r = engine.refs[t](fields, f, null);
+						r = templeton.refs[t](fields, f, null);
 					}
 					else {
-						r = ctx.overrides[f] || engine.delve(fields, f, null);
+						r = ctx.overrides[f] || templeton.delve(fields, f, null);
 					}
 					if (r===null) {
 						out += token[0];
@@ -109,16 +107,16 @@ var engine = {
 						if (token[4]) {
 							mods = token[4].split('|');
 							for (j=0; j<mods.length; j++) {
-								if (engine.helpers.hasOwnProperty(mods[j])) {
+								if (templeton.helpers.hasOwnProperty(mods[j])) {
 									if (mods[j]==='html') {
 										html = false;
 									}
-									r = engine.execHelper(mods[j], r);
+									r = templeton.execHelper(mods[j], r);
 								}
 							}
 						}
 						if (html) {
-							r = engine.helpers.html(r);
+							r = templeton.helpers.html(r);
 						}
 						out += r;
 					}
@@ -127,10 +125,10 @@ var engine = {
 			else {
 				if (t==='/' || t===':') {
 					ctx.id = stack.pop();
-					ctx.value = ctx.overrides[ctx.id] || engine.delve(fields, ctx.id, null);
+					ctx.value = ctx.overrides[ctx.id] || templeton.delve(fields, ctx.id, null);
 					if (stack.length===0) {
 						ctx.content = text.substring(ctx.blockStart, tokenizer.lastIndex - token[0].length);
-						r = engine.blockHelpers[ctx.blockHelper](ctx);
+						r = templeton.blockHelpers[ctx.blockHelper](ctx);
 						if (r && typeof(r)==='string') {
 							out += r;
 						}
@@ -161,12 +159,12 @@ var engine = {
 	execHelper : function(name, text) {
 		var parts = name.split(':'),
 			id = parts[0],
-			h = engine.helpers[id];
+			h = templeton.helpers[id];
 		if (typeof h==='string') {
-			return engine.template(h, text);
+			return templeton.template(h, text);
 		}
 		parts.splice(0, 1, text);
-		return h.apply(engine.helpers, parts);
+		return h.apply(templeton.helpers, parts);
 	},
 	
 	isArray : Array.isArray || function(obj) {
@@ -191,9 +189,9 @@ var engine = {
 			return obj.hasOwnProperty(key) ? obj[key] : fallback;
 		}
 		if (key.indexOf('[')!==-1) {
-			key = key.replace(engine.keyPath,'.$2');
+			key = key.replace(templeton.keyPath,'.$2');
 		}
-		key = key.replace(engine.trimDots,'').split('.');
+		key = key.replace(templeton.trimDots,'').split('.');
 		for (i=0, l=key.length; i<l; i++) {
 			if (!c.hasOwnProperty(key[i])) {
 				return fallback;
@@ -208,10 +206,10 @@ var engine = {
 };
 
 if (typeof define==='function' && define.amd) {
-	define('templateengine', function() {
-		return engine;
+	define('templeton', function() {
+		return templeton;
 	});
 }
 if (typeof module==='object') {
-	module.exports = self;
+	module.exports = templeton;
 }

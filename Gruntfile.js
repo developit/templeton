@@ -2,24 +2,26 @@ module.exports = function(grunt) {
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+		
 		uglify: {
 			main : {
 				options: {
 					banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
 				},
 				files: {
-					'template-engine.min.js': [
-						'template-engine.js'
+					'templeton.min.js': [
+						'templeton.js'
 					]
 				}
 			}
 		},
+		
 		jshint : {
 			options : {
 				browser : true
 			},
 			main : [
-				'template-engine.js'
+				'templeton.js'
 			]
 		}
 	});
