@@ -3,6 +3,8 @@ templeton [![NPM Version](http://img.shields.io/npm/v/templeton.svg?style=flat)]
 
 It's like the other ones but not at all like the other ones.  
 
+![Templeton Peck](http://img4.wikia.nocookie.net/__cb20100115042531/a-team/images/7/79/Templeton_Peck.jpg)
+
 ---
 
 Example
