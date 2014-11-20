@@ -9,7 +9,7 @@ var templeton = {
 		link : '<a href="{{href}}">{{title}}</a>',
 		
 		html : function(v) {
-			return String(v).replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+			return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 		},
 		
 		escape : function(v) {
