@@ -1,6 +1,6 @@
 {
   "name": "templeton",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "homepage": "https://github.com/developit/templeton",
   "authors": [
     "Jason Miller <jason@developit.ca>"
@@ -19,8 +19,7 @@
   "license": "BSD 3-Clause",
   "ignore": [
     "**/.*",
-    "**/*.min.js",
-    "**/*.map",
+    "dist",
     "node_modules",
     "bower_components",
     "test",
