@@ -1,6 +1,6 @@
 {
   "name": "templeton",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "main": "templeton.js",
   "description": "It's like the other ones but not at all like the other ones.",
   "repository": {
@@ -8,8 +8,8 @@
     "url": "git://github.com/developit/templeton.git"
   },
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-jshint": "~0.8.0",
-    "grunt-contrib-uglify": "~0.2.7"
+    "grunt": "~0.4.5",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.7.0"
   }
 }
